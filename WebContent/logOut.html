@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Acceso al Sistema</title>
+</head>
+<body>
+<h1>Está desconectado del sistema</h1>
+<h2>Volver a conectar...</h2>
+
+<form id="loginForm" action="ServMain" method="post">
+	<input type="hidden" name="operacion" id="operacion" value="login4Admin" />
+	<input type="text" name="usuario" id="usuario" value="" />
+	<input type="password" name="password" id="password" value="" />
+	<input type="submit" value="Entrar Admin"/>
+</form>
+<hr/>
+<form id="loginForm" action="ServMain" method="post">
+	<input type="hidden" name="operacion" id="operacion" value="login" />
+	<input type="text" name="usuario" id="usuario" value="" />
+	<input type="password" name="password" id="password" value="" />
+	<input type="submit" value="Acceso Usuarios"/>
+</form>
+</body>
+</html>
