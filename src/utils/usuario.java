@@ -85,6 +85,7 @@ public class usuario {
 					}else{
 						System.out.println("usuario::getPerfiladoSeguridad --  USUARIO NO ES TIPO ADMIN " );
 					}
+					resultado.close();
 				}catch (Exception e){
 					System.out.println("usuario::getPerfiladoSeguridad("+user+" , "+pwd+")  -- EXCEPCIÓN AL BUSCAR ROLES USUARIO en bbdd. \n  ****************** " + sql);
 					e.printStackTrace();
@@ -121,6 +122,8 @@ public class usuario {
 					System.out.println("usuario::validarUsuario("+u+" , "+p+")  -- No se encuentra el usuario. LOGIN ERROR  \n  ****************** " + sql);
 					loginOK = false;
 				}
+				resultado.close();
+				
 			} catch (SQLException e) {
 				System.out.println("usuario::validarUsuario("+u+" , "+p+")  -- No se encuentra el usuario. SQLException  \n  ****************** " + sql);
 				e.printStackTrace();			
@@ -165,10 +168,13 @@ public class usuario {
 				System.out.println("usuario::checkUserIsAdmin("+idUsuario+","+nombreUsuario+")  --  RECUPERAMOS "+Integer.parseInt(resultado.getString("cuenta"))+" ROLES TIPO ADMIN " );
 				
 				if(1 <= Integer.parseInt(resultado.getString("cuenta"))){
+					resultado.close();
 					return true;
 				}else{				
+					resultado.close();
 					return false;
 				}
+				
 
 		  }
 		

@@ -269,7 +269,7 @@ public class ServMain extends HttpServlet {
 			resultado.first();
 			System.out.println("ServMain::limpiaConexionesActivas("+idServidor+")  -  Se borrarán " + resultado.getString("cuenta") + " conexiones activas");
 			resultado.close();
-			
+			sentencia.close();
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

@@ -109,6 +109,7 @@ public class conexion {
 						System.out.println("conexion::removeSesion("+sello+") -- Error al borrar sesión con sello " + sello + "\nNO SE ENCUENTRA SESIÓN");
 						System.out.println("conexion::removeSesion("+sello+") -- ");
 					}
+					resultado.close();
 					
 			  }catch (Exception e){
 				  // TODO 
@@ -130,9 +131,10 @@ public class conexion {
 				if(resultado.first()){
 					this.idUsuario=resultado.getString("idUsuario");
 					sql = "select * from usuarios where idUsuario = '" + this.idUsuario + "'";
-					ResultSet resultado1 = sentencia.executeQuery(sql);
-					if(resultado1.first()){
-						this.nombre = resultado1.getString("nombre");
+					resultado.close();
+					resultado = sentencia.executeQuery(sql);
+					if(resultado.first()){
+						this.nombre = resultado.getString("nombre");
 						this.isAdmin = checkUserIsAdmin(sentencia, this.idUsuario); 
 						System.out.println("conexion::getSesion("+sello+") -- Se recupera al usuario " + this.nombre + " id-" + this.idUsuario + " isAdmin = " + this.isAdmin);
 					}else{
@@ -145,6 +147,8 @@ public class conexion {
 					  this.nombre = "";		
 						this.idUsuario= "";
 				}
+				resultado.close();
+				
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
