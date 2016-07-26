@@ -52,9 +52,21 @@ public class ServMain extends HttpServlet {
     @Override
     public void init() throws ServletException{
     	
-    	System.out.println("ServMain::INIT  -- CONFIGURACIONES SERVIDOR AL ARRANCAR");    	
-		
+    	System.out.println("ServMain::INIT  -- CONFIGURACIONES SERVIDOR AL ARRANCAR");
+
+    	conecta();
+
+        ServletContext servletContext = getServletContext();
+        idSevidor = servletContext.getInitParameter(cfgIdSevidor);        
+        System.out.println("ServMain::INIT cfgIdSevidor = " + idSevidor  );
+        System.out.println("ServMain::INIT  -- CARGA INICIALIZACIÓN WEB.XML");  
+
+        limpiaConexionesActivas(idSevidor);
+
     	
+    }
+    
+    private static void conecta(){
 		Context envContext;
 		try {
 			ctx = new InitialContext();
@@ -63,24 +75,12 @@ public class ServMain extends HttpServlet {
 			conn = ds.getConnection();
 			System.out.println("ServMain::INIT  -- CONEXIÓN A LA BBDD REALIZADA");    	
 		} catch (NamingException | SQLException e) {
-			
+
 			System.out.println("ServMain::INIT  -- ERROR AL REALIZAR CONEXIÓN A LA BBDD ");    
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-	    
-        ServletContext servletContext = getServletContext();
-        idSevidor = servletContext.getInitParameter(cfgIdSevidor);        
-        System.out.println("ServMain::INIT cfgIdSevidor = " + idSevidor  );
-        System.out.println("ServMain::INIT  -- CARGA INICIALIZACIÓN WEB.XML");  
-        
-    	
-        limpiaConexionesActivas(idSevidor);
-    	
-    	
     }
-    
     
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
