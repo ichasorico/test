@@ -186,7 +186,7 @@ public class conexion {
 						//Statement sentencia = conn.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);					
 						sql = "SELECT count(*) as cuenta FROM conexionesactivas where idSesion = '"+u.getFirma()+"'";
 						ResultSet resultado = sentencia.executeQuery(sql);
-						System.out.println("conexion::addSession --  BUSCAMOS SESIÓN PREVIAMENTE GUARDADA PARA idSesión " + u.getIdSesion());
+						System.out.println("conexion::addSession --  BUSCAMOS SESIÓN PREVIAMENTE GUARDADA PARA idSesión " + u.getFirma());
 						resultado.first();
 						
 						if((1 <= Integer.parseInt(resultado.getString("cuenta")) && sobreEscribe)){
@@ -300,8 +300,10 @@ public class conexion {
 				//System.out.println("usuario::checkUserIsAdmin("+idUsuario+","+nombreUsuario+")  --  RECUPERAMOS "+Integer.parseInt(resultado.getString("cuenta"))+" ROLES TIPO ADMIN " );
 				
 				if(1 <= Integer.parseInt(resultado.getString("cuenta"))){
+					resultado.close();
 					return true;
-				}else{				
+				}else{
+					resultado.close();
 					return false;
 				}
 
