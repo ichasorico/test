@@ -31,7 +31,7 @@ import utils.conexiones;
 
 public class ServMain extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private static List<usuario> sesiones = new ArrayList <usuario>();
+	//private static List<usuario> sesiones = new ArrayList <usuario>();
 	private static String cfgIdSevidor = "tomcatId4Persistencia";
 	
 	private static  String idSevidor = "";
@@ -54,19 +54,22 @@ public class ServMain extends HttpServlet {
     	
     	System.out.println("ServMain::INIT  -- CONFIGURACIONES SERVIDOR AL ARRANCAR");
 
-    	conecta();
+    	initDB();
 
-        ServletContext servletContext = getServletContext();
-        idSevidor = servletContext.getInitParameter(cfgIdSevidor);        
-        System.out.println("ServMain::INIT cfgIdSevidor = " + idSevidor  );
-        System.out.println("ServMain::INIT  -- CARGA INICIALIZACIÓN WEB.XML");  
+    	setIdServ(getServletContext());        
 
         limpiaConexionesActivas(idSevidor);
 
     	
     }
     
-    private static void conecta(){
+    private static void setIdServ(ServletContext servletContext){
+    	idSevidor = servletContext.getInitParameter(cfgIdSevidor);        
+        System.out.println("ServMain::INIT cfgIdSevidor = " + idSevidor  );
+        System.out.println("ServMain::INIT  -- CARGA INICIALIZACIÓN WEB.XML");  
+    }
+    
+    private static void initDB(){
 		Context envContext;
 		try {
 			ctx = new InitialContext();
@@ -143,7 +146,7 @@ public class ServMain extends HttpServlet {
 	    			HttpSession curSesion = request.getSession();
 		        	String idSesion = curSesion.getId();
 		        	usr.setIdSesion(idSesion);
-	    			sesiones.add(usr);
+	    			//sesiones.add(usr);
 	        		System.out.println("ServMain::login  -- Login ok");
 	        		curSesion.setAttribute("Login", "true");
 	        		
