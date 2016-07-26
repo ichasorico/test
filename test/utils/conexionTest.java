@@ -69,7 +69,7 @@ public class conexionTest {
 	    
 	    
 	    @Test 
-	    public void testConexion()
+	    public void testConexionUsuarioValido()
 	    {
 	    	
 	    	usuario u1 = new usuario(sentencia,usuario1, pwdUsuario1);
@@ -87,5 +87,29 @@ public class conexionTest {
     			System.out.println(e.toString());
     		}
     		assertEquals(selloUsuario1, selloTest);
+	    }
+	    
+	    @Test (expected = java.lang.NumberFormatException.class)
+	    public void testConexionUsuario_NO_Valido()
+	    {
+	    	
+	    	usuario u3 = new usuario(sentencia,usuario3, pwdUsuario3);
+	    	selloUsuario1 = u3.getFirma();
+	    	conexion c = new conexion(sentencia, u3,idServidor,true);
+	    	/*
+	    	// VERFICIACIÓN SGBD
+	    	String sql = "SELECT * FROM conexionesactivas where idSesion = '"+selloUsuario1+"'";	    	
+	    	String selloTest = ""; 
+    		try{
+    			ResultSet resultado = sentencia.executeQuery(sql);
+	    		resultado.first();	    		
+	    		selloTest = resultado.getString("idSesion");	    		
+    		}catch(Exception e){
+    			System.out.println(sql);
+    			System.out.println(e.toString());
+    		}
+    		//assertEquals(selloUsuario1, selloTest);
+    		  */
+    		 
 	    }
 }
