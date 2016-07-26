@@ -34,11 +34,11 @@ public class ServMain extends HttpServlet {
 	private static List<usuario> sesiones = new ArrayList <usuario>();
 	private static String cfgIdSevidor = "tomcatId4Persistencia";
 	
-	private String idSevidor = "";
+	private static  String idSevidor = "";
 	
-	private  InitialContext ctx = null;
-	private  DataSource ds = null;
-	private  Connection conn = null;       
+	private static  InitialContext ctx = null;
+	private static  DataSource ds = null;
+	private static  Connection conn = null;       
 	  
 	  
     /**

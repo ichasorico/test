@@ -192,15 +192,14 @@ public class conexion {
 						if((1 <= Integer.parseInt(resultado.getString("cuenta")) && sobreEscribe)){
 							System.out.println("conexion::addSession --  SE IDENTIFICA INCONSISTENCIA DE DATOS. \nFLAG SOBREESCRIBIR = "+sobreEscribe+"\nBORRAMOS "+ resultado.getString("cuenta")+ " REGISTRO(S) CON MISMO IDSESION " + u.getIdSesion() );
 							sql = "delete from conexionesactivas where idSesion = '"+u.getIdSesion()+"'";
-							resultado.close();
+							//resultado.close();
 							//sentencia.close();
 							//sentencia = conn.createStatement();
 							sentencia.execute(sql);
 							// return false;							
 						}
 
-						// resultado.close();
-						// sentencia.close();
+
 
 						System.out.println("conexion::addSession  --  AÑADIMOS SESIÓN " );
 						int myInt = (u.isAdmin()) ? 1 : 0;
@@ -210,7 +209,9 @@ public class conexion {
 						sql = "insert into conexionesactivas (idSesion, idUsuario, isAdmin,idServidor, timeStamp) VALUES ('"+u.getFirma()+"', "+Integer.parseInt(u.getIdUsuario())+", " + myInt + ",'"+idServ+"','"+timeStamp+"')";
 						// Statement sentencia1 = conn.createStatement();
 						sentencia.execute(sql);
-					
+						
+						resultado.close();
+						sentencia.close();
 						
 					}catch (Exception e){
 						System.out.println("conexion::addSession ()  -- EXCEPCIÓN AL DETERMINAR INCONSISTENCIA DE DATOS SESIONES ALMACENADAS");
@@ -331,10 +332,13 @@ public class conexion {
 					System.out.println("usuario::checkUserIsAdmin("+idUsuario+")  --  RECUPERAMOS "+Integer.parseInt(resultado.getString("cuenta"))+" ROLES TIPO ADMIN " );
 					
 					if(1 <= Integer.parseInt(resultado.getString("cuenta"))){
+						resultado.close();						
 						return true;
 					}else{				
 						
 					}
+					resultado.close();
+					
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
