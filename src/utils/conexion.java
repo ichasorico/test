@@ -201,7 +201,7 @@ public class conexion {
 
 
 
-						System.out.println("conexion::addSession  --  AÑADIMOS SESIÓN " );
+						
 						int myInt = (u.isAdmin()) ? 1 : 0;
 						
 						String timeStamp = String.valueOf(System.currentTimeMillis());
@@ -209,9 +209,9 @@ public class conexion {
 						sql = "insert into conexionesactivas (idSesion, idUsuario, isAdmin,idServidor, timeStamp) VALUES ('"+u.getFirma()+"', "+Integer.parseInt(u.getIdUsuario())+", " + myInt + ",'"+idServ+"','"+timeStamp+"')";
 						// Statement sentencia1 = conn.createStatement();
 						sentencia.execute(sql);
-						
+						System.out.println("conexion::addSession  --  AÑADIMOS SESIÓN \n" +sql );
 						resultado.close();
-						sentencia.close();
+						//sentencia.close();
 						
 					}catch (Exception e){
 						System.out.println("conexion::addSession ()  -- EXCEPCIÓN AL DETERMINAR INCONSISTENCIA DE DATOS SESIONES ALMACENADAS");

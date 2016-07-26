@@ -83,7 +83,8 @@ public class conexionTest {
 	    		resultado.first();	    		
 	    		selloTest = resultado.getString("idSesion");	    		
     		}catch(Exception e){
-    			
+    			System.out.println(sql);
+    			System.out.println(e.toString());
     		}
     		assertEquals(selloUsuario1, selloTest);
 	    }
