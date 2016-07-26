@@ -1,9 +1,6 @@
 package utils;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertSame;
+import static org.junit.Assert.*;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -41,7 +38,7 @@ public class conexionTest {
 		// USUARIO TEST ERROR
 		private String usuario3 = "felipe";
 		private String pwdUsuario3 = "asteroidX";
-
+		private String selloUsuario3 = null;
 	
 		private String idUsuario1 = "";
 		private String idUsuario2 = "";
@@ -89,13 +86,14 @@ public class conexionTest {
     		assertEquals(selloUsuario1, selloTest);
 	    }
 	    
-	    @Test (expected = java.lang.NumberFormatException.class)
+	    @Test 
 	    public void testConexionUsuario_NO_Valido()
 	    {
 	    	
 	    	usuario u3 = new usuario(sentencia,usuario3, pwdUsuario3);
-	    	selloUsuario1 = u3.getFirma();
-	    	conexion c = new conexion(sentencia, u3,idServidor,true);
+	    	//selloUsuario3 = u3.getFirma();
+	    	//conexion c = new conexion(sentencia, u3,idServidor,true);
+	    	assertNull(u3.getFirma());
 	    	/*
 	    	// VERFICIACIÓN SGBD
 	    	String sql = "SELECT * FROM conexionesactivas where idSesion = '"+selloUsuario1+"'";	    	
