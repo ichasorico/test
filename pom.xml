@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>icrti.J2EE</groupId>
   <artifactId>icrti.J2EE</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>1.0.1</version>
   <packaging>war</packaging>
   <name>proyecto convertido a maven</name>
   <properties>
@@ -21,7 +21,7 @@
 			</configuration>		
 		</plugin>
 	</plugins>
-	</reporting>
+  </reporting>
 
   <build>
     
@@ -38,6 +38,7 @@
         <directory>src</directory>
       </resource>
     </resources>
+    
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -48,6 +49,7 @@
           <encoding>UTF-8</encoding>
         </configuration>
       </plugin>
+      
       <plugin>
         <artifactId>maven-war-plugin</artifactId>
         <version>2.6</version>
@@ -60,13 +62,17 @@
     
     </plugins>
   </build>
+  
   <organization>
-  	<name>iCRTi</name>
+  	<name>iCRTi Consulting S.L.</name>
+  	<url>www.icrti.es</url>
   </organization>
+  
   <ciManagement>
   	<system>jenkins</system>
-  	<url>https://localhost:8443/jenkins</url>
+  	<url>https://localhost/jenkins</url>
   </ciManagement>
+  
   <dependencies>
   	<dependency>
   		<groupId>javax.servlet</groupId>
@@ -77,6 +83,7 @@
   		<groupId>junit</groupId>
   		<artifactId>junit</artifactId>
   		<version>4.12</version>
+  		<scope>test</scope>
   	</dependency>
   	<dependency>
   		<groupId>mysql</groupId>
@@ -87,6 +94,7 @@
   		<groupId>org.sonarsource.scanner.maven</groupId>
   		<artifactId>sonar-maven-plugin</artifactId>
   		<version>3.0.1</version>
+  		<scope>test</scope>
   	</dependency>
   </dependencies>
 </project>
