@@ -39,7 +39,7 @@ public class ServMain extends HttpServlet {
 	private static  InitialContext ctx = null;
 	private static  DataSource ds = null;
 	private static  Connection conn = null;       
-
+	private static boolean bINITT = false;
 	  
     /**
      * @see HttpServlet#HttpServlet()
@@ -91,7 +91,7 @@ public class ServMain extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException { 
 
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
-		if (null != request.getAttribute("INIT_ICRTI") && "true".equalsIgnoreCase((String)request.getAttribute("INIT_ICRTI"))){
+		if (bINITT){
 			if(validarRequest(request)){
 				
 			// IDEA a ver qué hacemos
@@ -286,6 +286,7 @@ public class ServMain extends HttpServlet {
 				sentencia.execute(sql);
 				System.out.println("ServMain::INITT::limpiaConexionesActivas("+idServidor+")  - Borrado de conexiones activas instancia + " + idServidor + "  OK !!!");
 				sentencia.close();
+				bINITT =true;
 				return true;
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
