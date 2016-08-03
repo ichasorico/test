@@ -70,7 +70,7 @@
   
   <ciManagement>
   	<system>jenkins</system>
-  	<url>https://localhost/jenkins</url>
+  	<url>https://trabajo/jenkins</url>
   </ciManagement>
   
   <dependencies>
@@ -78,6 +78,7 @@
   		<groupId>javax.servlet</groupId>
   		<artifactId>javax.servlet-api</artifactId>
   		<version>3.0.1</version>
+  		<scope>provided</scope>
   	</dependency>
   	<dependency>
   		<groupId>junit</groupId>
