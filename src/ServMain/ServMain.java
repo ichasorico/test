@@ -39,7 +39,7 @@ public class ServMain extends HttpServlet {
 	private static  InitialContext ctx = null;
 	private static  DataSource ds = null;
 	private static  Connection conn = null;       
-	private boolean bINITT = false;
+	private static boolean bINITT = false;
 	  
     /**
      * @see HttpServlet#HttpServlet()
