@@ -248,7 +248,7 @@ public class ServMain extends HttpServlet {
      * ELIMINA SESIÓN ACTUAL DE LA LISTA DE SESIONES
      * @param request
      */
-    private static void logOUT(HttpServletRequest request){
+    private void logOUT(HttpServletRequest request){
 
     	conexion c = new conexion();
     	Statement sentencia;
@@ -268,7 +268,7 @@ public class ServMain extends HttpServlet {
     	
     }
     
-	private boolean limpiaConexionesActivas(String idServidor){
+	private static boolean limpiaConexionesActivas(String idServidor){
 		
 		String sql = "select count(*) as cuenta from conexionesactivas where idServidor = '" + idServidor + "'";
 		Statement sentencia;
