@@ -248,7 +248,7 @@ public class ServMain extends HttpServlet {
      * ELIMINA SESIÓN ACTUAL DE LA LISTA DE SESIONES
      * @param request
      */
-    private void logOUT(HttpServletRequest request){
+    private static void logOUT(HttpServletRequest request){
 
     	conexion c = new conexion();
     	Statement sentencia;
