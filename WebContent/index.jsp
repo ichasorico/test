@@ -11,26 +11,39 @@
 <body>
 <%
 
-if (session.getAttribute("Login")==null){
-	%>
+ServletContext sc = request.getServletContext();
+String init = (String)sc.getAttribute("INIT_ICRTI");
+if(null == init){
+	init="trueINIT";
+}
 
-	
-	<%@ include file="WEB-INF/incl/loginform.html" %>	
+if("false".equalsIgnoreCase(init)){
+%>
+	<script type=text/javascrip">
+		window.location.href="error.html";
+	</script>
+<%	
 
-	<%
 }else{
+	if (session.getAttribute("Login")==null){
+		%>
 	
+		<%@ include file="WEB-INF/incl/loginform.html" %>	
 
-	
-	%>		
-	
-	<%@ include file="WEB-INF/incl/bodyLoged.jsp" %>	
-	
+		<%
+	}else{
 		
-	<%
-} 
-	%>
+		%>		
+	
+		<%@ include file="WEB-INF/incl/bodyLoged.jsp" %>	
+			
+		<%
+	}
+	
+}
 
+%>
 
+<!-- init=<%=init %> -->
 </body>
 </html>

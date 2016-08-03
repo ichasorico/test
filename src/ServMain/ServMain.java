@@ -39,7 +39,7 @@ public class ServMain extends HttpServlet {
 	private static  InitialContext ctx = null;
 	private static  DataSource ds = null;
 	private static  Connection conn = null;       
-	private static  boolean bINITT = false;
+	public static  boolean bINITT = false;
 	  
     /**
      * @see HttpServlet#HttpServlet()
@@ -59,8 +59,8 @@ public class ServMain extends HttpServlet {
     	setIdServ(getServletContext());        
 
     	bINITT = limpiaConexionesActivas(idSevidor);
-        	
-
+        
+    	getServletContext().setAttribute("INIT_ICRTI", String.valueOf(bINITT));
     	
     }
     

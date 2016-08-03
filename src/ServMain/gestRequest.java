@@ -4,6 +4,7 @@ import java.io.IOException;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -43,6 +44,11 @@ public class gestRequest implements Filter {
 	      // Print the counter.
 	      System.out.println("Filtro::número request:"+ hitCount );
 
+	      
+	      ServletContext sc = request.getServletContext();
+	      String init = (String)sc.getAttribute("INIT_ICRTI");
+	      System.out.println("Filtro::INIT="+ init);
+	      
 		// pass the request along the filter chain
 		chain.doFilter(request, response);
 	}
