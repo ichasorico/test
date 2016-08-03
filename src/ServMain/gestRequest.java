@@ -47,6 +47,7 @@ public class gestRequest implements Filter {
 	      
 	      ServletContext sc = request.getServletContext();
 	      String init = (String)sc.getAttribute("INIT_ICRTI");
+	      request.setAttribute("INIT_ICRTI", init);
 	      System.out.println("Filtro::INIT="+ init);
 	      
 		// pass the request along the filter chain

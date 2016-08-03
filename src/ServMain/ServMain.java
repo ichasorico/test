@@ -39,7 +39,7 @@ public class ServMain extends HttpServlet {
 	private static  InitialContext ctx = null;
 	private static  DataSource ds = null;
 	private static  Connection conn = null;       
-	private static boolean bINITT = false;
+
 	  
     /**
      * @see HttpServlet#HttpServlet()
@@ -58,9 +58,8 @@ public class ServMain extends HttpServlet {
 
     	setIdServ(getServletContext());        
 
-    	bINITT = limpiaConexionesActivas(idSevidor);
         
-    	getServletContext().setAttribute("INIT_ICRTI", String.valueOf(bINITT));
+    	getServletContext().setAttribute("INIT_ICRTI", String.valueOf(limpiaConexionesActivas(idSevidor)));
     	
     }
     
@@ -92,7 +91,7 @@ public class ServMain extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException { 
 
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
-		if (bINITT){
+		if (null != request.getAttribute("INIT_ICRTI") && "true".equalsIgnoreCase((String)request.getAttribute("INIT_ICRTI"))){
 			if(validarRequest(request)){
 				
 			// IDEA a ver qué hacemos
