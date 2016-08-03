@@ -39,7 +39,7 @@ public class ServMain extends HttpServlet {
 	private static  InitialContext ctx = null;
 	private static  DataSource ds = null;
 	private static  Connection conn = null;       
-	  
+	private static  boolean bINITT = false;
 	  
     /**
      * @see HttpServlet#HttpServlet()
@@ -58,7 +58,8 @@ public class ServMain extends HttpServlet {
 
     	setIdServ(getServletContext());        
 
-        limpiaConexionesActivas(idSevidor);
+    	bINITT = limpiaConexionesActivas(idSevidor);
+        	
 
     	
     }
@@ -91,33 +92,39 @@ public class ServMain extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException { 
 
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
-		if(validarRequest(request)){
-			
-		// IDEA a ver qué hacemos
-			
-	        if(request.getParameter("operacion") != null){
-	        
-	        	if("pingLogin".equals(request.getParameter("operacion"))){
-	        		 
-	        		response.getOutputStream().write("LoginOK!!".getBytes());
-	        		 
-	        	}else if("logOut".equals(request.getParameter("operacion"))){
-	        		logOUT(request);
-	        		response.sendRedirect("logOut.html");
-	        	}else{
-	        		response.sendRedirect("index.jsp");
-	        	}	        
-	        }
-		}else{
-			if("pingLogin".equals(request.getParameter("operacion"))){
-	    		//logOUT(request);
-        		response.getOutputStream().write("logOut.html".getBytes());
-			}else{
+		if (bINITT){
+			if(validarRequest(request)){
 				
+			// IDEA a ver qué hacemos
+				
+		        if(request.getParameter("operacion") != null){
+		        
+		        	if("pingLogin".equals(request.getParameter("operacion"))){
+		        		 
+		        		response.getOutputStream().write("LoginOK!!".getBytes());
+		        		 
+		        	}else if("logOut".equals(request.getParameter("operacion"))){
+		        		logOUT(request);
+		        		response.sendRedirect("logOut.html");
+		        	}else{
+		        		response.sendRedirect("index.jsp");
+		        	}	        
+		        }
+			}else{
+				if("pingLogin".equals(request.getParameter("operacion"))){
+		    		//logOUT(request);
+	        		response.getOutputStream().write("logOut.html".getBytes());
+				}else{
+					
+				}
+	    		//response.sendRedirect("logOut.html");
+				
+				//response.getOutputStream().write("logOut.html".getBytes());
 			}
-    		//response.sendRedirect("logOut.html");
-			
-			//response.getOutputStream().write("logOut.html".getBytes());
+		}else{
+			//PROBLEMA INICIALIZACIÓN 
+			//ENVIAR A PÁGINA DE ERROR
+			response.sendRedirect("error.html");
 		}
 		//response.sendRedirect("index.jsp");
         //request.getRequestDispatcher("index.jsp").forward(request, response);
@@ -262,7 +269,7 @@ public class ServMain extends HttpServlet {
     	
     }
     
-	private void limpiaConexionesActivas(String idServidor){
+	private boolean limpiaConexionesActivas(String idServidor){
 		
 		String sql = "select count(*) as cuenta from conexionesactivas where idServidor = '" + idServidor + "'";
 		Statement sentencia;
@@ -271,10 +278,23 @@ public class ServMain extends HttpServlet {
 			sentencia = conn.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
 			resultado = sentencia.executeQuery(sql);
 			resultado.first();
-			System.out.println("ServMain::limpiaConexionesActivas("+idServidor+")  -  Se borrarán " + resultado.getString("cuenta") + " conexiones activas");
+			System.out.println("ServMain::INITT::limpiaConexionesActivas("+idServidor+")  -  Se borrarán " + resultado.getString("cuenta") + " conexiones activas");
 			resultado.close();
 			sentencia.close();
-			
+			sql = "delete from conexionesactivas where idServidor = '" + idServidor + "'";
+			try {
+				sentencia = conn.createStatement();
+				sentencia.execute(sql);
+				System.out.println("ServMain::INITT::limpiaConexionesActivas("+idServidor+")  - Borrado de conexiones activas instancia + " + idServidor + "  OK !!!");
+				sentencia.close();
+				return true;
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}catch (Exception e){
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -282,17 +302,8 @@ public class ServMain extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		sql = "delete from conexionesactivas where idServidor = '" + idServidor + "'";
-		try {
-			sentencia = conn.createStatement();
-			sentencia.execute(sql);
-			System.out.println("ServMain::limpiaConexionesActivas("+idServidor+")  - Borrado de conexiones activas instancia + " + idServidor + "  OK !!!");
-			sentencia.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+				
+		return false;
 	}
     
 }
