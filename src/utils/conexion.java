@@ -15,7 +15,12 @@ import utils.BCrypt;
 
 public class conexion {
 
-	String idUsuario, nombre, idSesion;
+	String idUsuario, nombre, idSesion, timeStamp;
+
+
+
+
+
 
 	boolean isAdmin = false;	
 	
@@ -130,6 +135,7 @@ public class conexion {
 				ResultSet resultado = sentencia.executeQuery(sql);
 				if(resultado.first()){
 					this.idUsuario=resultado.getString("idUsuario");
+					this.timeStamp=resultado.getString("timeStamp");
 					sql = "select * from usuarios where idUsuario = '" + this.idUsuario + "'";
 					resultado.close();
 					resultado = sentencia.executeQuery(sql);
@@ -373,7 +379,10 @@ public class conexion {
 	}
 
 
-
+	public String getTimeStamp() {
+		return timeStamp;
+	}
+	
 
 	/**
 	 * DETERMINA SI UN USUARIO EST CORRECTAMENTE FORMADO. PARA ELLO VALIDA SI DISPONE DE 

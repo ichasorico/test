@@ -32,10 +32,12 @@ import utils.conexiones;
 public class ServMain extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	//private static List<usuario> sesiones = new ArrayList <usuario>();
-	private static String cfgIdSevidor = "tomcatId4Persistencia";
 	
+	private static String cfgIdSevidor = "tomcatId4Persistencia";	
+	private static String cfgValidezTimeStamp = "validezTimeStamp";
 	private static  String idSevidor = "";
 	
+	private static long valiezTimeStamp = 0;
 	private static  InitialContext ctx = null;
 	private static  DataSource ds = null;
 	private static  Connection conn = null;       
@@ -56,8 +58,8 @@ public class ServMain extends HttpServlet {
 
     	initDB();
 
+    	setValidezTimeStamp(getServletContext());
     	setIdServ(getServletContext());        
-
         
     	getServletContext().setAttribute("INIT_ICRTI", String.valueOf(limpiaConexionesActivas(idSevidor)));
     	
@@ -67,6 +69,12 @@ public class ServMain extends HttpServlet {
     	idSevidor = servletContext.getInitParameter(cfgIdSevidor);        
         System.out.println("ServMain::INIT cfgIdSevidor = " + idSevidor  );
         System.out.println("ServMain::INIT  -- CARGA INICIALIZACIÓN WEB.XML");  
+    }
+    
+    private static void setValidezTimeStamp(ServletContext servletContext){
+    	valiezTimeStamp = Long.parseLong(servletContext.getInitParameter(cfgValidezTimeStamp));        
+        System.out.println("ServMain::INIT setValidezTimeStamp = " + idSevidor  );
+        
     }
     
     private static void initDB(){
@@ -99,8 +107,15 @@ public class ServMain extends HttpServlet {
 		        if(request.getParameter("operacion") != null){
 		        
 		        	if("pingLogin".equals(request.getParameter("operacion"))){
-		        		 
-		        		response.getOutputStream().write("LoginOK!!".getBytes());
+		        		Long res = gestionaPing(request, response); 
+		        		if ( res == Long.parseLong("0")){
+		        			logOUT(request);
+		        			response.getOutputStream().write("logOut.html".getBytes());
+		        		}else{
+		        			String respuesta = "LoginOK!!" + String.valueOf(res);
+		        			response.getOutputStream().write(respuesta.getBytes());
+		        		}
+		        		
 		        		 
 		        	}else if("logOut".equals(request.getParameter("operacion"))){
 		        		logOUT(request);
@@ -114,7 +129,7 @@ public class ServMain extends HttpServlet {
 		    		//logOUT(request);
 	        		response.getOutputStream().write("logOut.html".getBytes());
 				}else{
-					
+					response.sendRedirect("logOut.html");
 				}
 	    		//response.sendRedirect("logOut.html");
 				
@@ -137,7 +152,26 @@ public class ServMain extends HttpServlet {
 		doGet(request, response);
 	}
 	
-
+	/**
+	 * Proporciona información relacionada con la conexión vía AJAX
+	 * @param request
+	 * @param response
+	 */
+	private Long gestionaPing(HttpServletRequest request, HttpServletResponse response){
+		
+		HttpSession curSesion = request.getSession();
+		Long tiempoActividad = 	Long.parseLong(curSesion.getAttribute("timeStamped").toString()) - 
+								Long.parseLong(curSesion.getAttribute("timeStamp").toString()); 
+		if(tiempoActividad 	> 	valiezTimeStamp	){
+			System.out.println("ServMain::gestionaPing TIEMPO INACTIVIDAD SUPERADO. LOGOUT USUARIO");
+    		return Long.parseLong("0");
+		}else{
+			System.out.println("ServMain::gestionaPing TIEMPO INACTIVIDAD CORRECTO.");
+			return tiempoActividad;			
+		}	
+	}
+	
+	
     private boolean login(HttpServletRequest request){
     	
     	System.out.println("ServMain::login SOLICITUD DE LOGIN");
@@ -208,6 +242,8 @@ public class ServMain extends HttpServlet {
     		try {
 				Statement sentencia = conn.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
 				conexion c = new conexion(sentencia, session.getAttribute("sello").toString());
+				session.setAttribute("timeStamp", c.getTimeStamp());
+				session.setAttribute("timeStamped", String.valueOf(System.currentTimeMillis()));
 				sentencia.close();
 	    		if (c.isUserOk()){
 	    			return true;
